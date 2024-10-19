@@ -1,0 +1,32 @@
+<% layout('/layouts/commen.ejs') %>
+<body>
+    <h2  class="col-4 offset-3 mt-3"> signup form </h2>
+
+    <div class="row mt-2 col-4 offset-3"  >
+        <form method="post" action="/signup"  class="needs-validation" novalidate>
+            <div class="mb-2 mt-2">
+                <label for="signup" class="form-label">Username</label>
+                <input class="form-control" type="text" name="username" id="signup" class="signup" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+            </div>
+
+
+            <div class="mb-2">
+                <label for="email" class="form-label">Email</label>
+                <input class="form-control" type="email" name="email" id="email" class="email" required>
+            </div>
+
+            <div class="mb-2">
+                <label for="password" class="form-label">Password</label>
+                <input class="form-control" type="password" name="password" id="password" class="password" required>
+            </div>
+            
+            <button class="btn-success mt-4 col-2 offset-1">SignUp</button>
+            
+        </form>
+    </div>
+ 
+   
+</body> 
