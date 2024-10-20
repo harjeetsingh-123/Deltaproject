@@ -1,98 +1,3 @@
-// const express = require('express');
-// const router = express.Router({ mergeParams: true });
-// const WrapeAsync = require("../utils/wrapeAsync.js");
-// const ExpressError = require("../utils/ExpressError.js");
-// const { listingSchema } = require("../joi.js");
-// const Listing = require("../models/listing.js");
-
-
-// const validationListing = (req, res, next) => {
-//     let { error } = listingSchema.validate(req.body.listing);
-//     if (error) {
-//         throw new ExpressError(404, error);
-//     } else {
-//         next();
-//     }
-// };
-// ///// index route 
-
-// router.get("/listings", WrapeAsync(async (req, res) => {
-//     let initdata = await Listing.find({});
-//     res.render("listings/index.ejs", { initdata });
-// }));
-
-
-// // // New listing form route 
-
-// router.get("/listings/new", (req, res) =>{
-//     if(!req.isAuthenticated()){
-//         req.flash("error","you must logged to create listing");
-//        res.redirect("/login");
-//     }     
-//        res.render("listings/new.ejs");
-    
-//  });
-
-
-
-// ///// save listings 
-
-// router.post("/listings",WrapeAsync(async (req, res) => {
-//     let newlisting = new Listing(req.body.listing);
-//     req.flash("success","New listing created")
-//     await newlisting.save();
-//     res.redirect("/listings");
-// }));
-
-// //// show listing 
-
-// router.get("/listings/:id", WrapeAsync(async (req, res) => {
-//     let { id } = req.params;
-//     let list = await Listing.findById(id).populate("Reviews");
-//     if(!list) {
-//         req.flash("error","listing not exists..!")
-//         res.redirect("/listings")
-//     }
-//     res.render("listings/show.ejs", { list });
-// }));
-
-
-
-
-// ///// Edit listing Route 
-
-// router.get("/listings/:id/edit", WrapeAsync(async (req, res) => {
-//     let { id } = req.params;
-//     let listing = await Listing.findById(id);
-//     if(!listing) {
-//         req.flash("error","listing not exists..!")
-//         res.redirect("/listings")
-//     }
-
-//     res.render("listings/edit.ejs", { listing });
-// }));
-
-
-// //// Update listings 
-
-
-// router.put("/listings/:id", WrapeAsync(async (req, res) => {
-//     let { id } = req.params;
-//     let p = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-//     req.flash("success","listing Updateed")
-//     res.redirect("/listings");
-// }));
-
-
-// //// delete Route 
-
-// router.delete("/listings/:id", WrapeAsync(async (req, res) => {
-//     let { id } = req.params;
-//     await Listing.findByIdAndDelete(id);
-//     req.flash("success","listing Deleted")
-//     res.redirect("/listings");
-// }));
-
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const WrapeAsync = require("../utils/wrapeAsync.js");
@@ -110,22 +15,32 @@ const validationListing = (req, res, next) => {
 };
 
 // Index route
-router.get("/listings", WrapeAsync(async (req, res) => {
+router.get("/", WrapeAsync(async (req, res) => {
     let initdata = await Listing.find({});
     res.render("listings/index.ejs", { initdata });
 }));
 
 // New listing form route
-router.get("/listings/new", (req, res) => {
+// router.get("/new", (req, res) => {
+//     if (!req.isAuthenticated()) {
+//         req.flash("error", "You must be logged in to create a listing");
+//         return res.redirect("/login");
+//     }
+//     res.render("listings/new.ejs");
+// });
+
+router.get("/new", (req, res) => {
     if (!req.isAuthenticated()) {
         req.flash("error", "You must be logged in to create a listing");
+        req.session.returnTo = req.originalUrl; // Store the original URL to redirect after login
         return res.redirect("/login");
     }
     res.render("listings/new.ejs");
 });
+ 
 
 // Save listings
-router.post("/listings", WrapeAsync(async (req, res) => {
+router.post("/", WrapeAsync(async (req, res) => {
     let newlisting = new Listing(req.body.listing);
     req.flash("success", "New listing created");
     await newlisting.save();
@@ -133,7 +48,7 @@ router.post("/listings", WrapeAsync(async (req, res) => {
 }));
 
 // Show listing
-router.get("/listings/:id", WrapeAsync(async (req, res) => {
+router.get("/:id", WrapeAsync(async (req, res) => {
     let { id } = req.params;
     let list = await Listing.findById(id).populate("Reviews");
     if (!list) {
@@ -144,7 +59,7 @@ router.get("/listings/:id", WrapeAsync(async (req, res) => {
 }));
 
 // Edit listing route
-router.get("/listings/:id/edit", WrapeAsync(async (req, res) => {
+router.get("/:id/edit", WrapeAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
     if (!listing) {
@@ -155,7 +70,7 @@ router.get("/listings/:id/edit", WrapeAsync(async (req, res) => {
 }));
 
 // Update listings
-router.put("/listings/:id", WrapeAsync(async (req, res) => {
+router.put("/:id", WrapeAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash("success", "Listing updated");
@@ -163,13 +78,11 @@ router.put("/listings/:id", WrapeAsync(async (req, res) => {
 }));
 
 // Delete route
-router.delete("/listings/:id", WrapeAsync(async (req, res) => {
+router.delete("/:id", WrapeAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success", "Listing deleted");
     res.redirect("/listings");
 }));
-
-
 
 module.exports = router;
