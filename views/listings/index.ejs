@@ -8,10 +8,10 @@
 
     <a href="/listings/<%= listing._id %>" class="class-link">
         <div id="har" class="card" style="width:23rem">
-            <img src="<%= listing.image %>" class="card-img-top" alt="listing_image"style="height:20rem">
+            <img src="<%= listing.image.url%>" class="card-img-top" alt="listing_image"style="height:20rem">
             <div class="card-body">
 
-                <p class="card-text"><%= listing.title %><br>
+            <p class="card-text"><%= listing.title %><br>
                 &#8377; <%=listing.price%> /night
                 </p>
             </div>

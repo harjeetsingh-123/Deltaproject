@@ -1,3 +1,7 @@
+if(process.env.NODE_EVE!="production"){
+    require('dotenv').config();
+}
+
 const express = require('express')
 const app = express()
 const path=require("path"); 
@@ -5,16 +9,16 @@ const mongoose = require('mongoose');
 const methodOverride = require("method-override");
 const ejsmate = require('ejs-mate');
 const Review = require('./models/review.js');
-const ExpressError=require("./utils/ExpressError.js")
-const listingsrouter=require("./Router/listings.js");
+const listingsrouter=require("./Router/listings.js")
 const reviewsrouter= require("./Router/review.js");
 const userrouter= require("./Router/user.js");
-const WrapeAsync = require("./utils/wrapeAsync.js");
 const  flash = require('connect-flash');
 const  session = require('express-session')
 const passport=require("passport");
 const LocalStrategy=require("passport-local")
 const User = require('./models/user.js');
+
+
 
 
 //// database connection 
@@ -77,6 +81,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success")
     res.locals.error=req.flash("error")
+    res.locals.curentUser=req.user
     next();
 })
 
