@@ -1,8 +1,5 @@
 
 const Listing = require("../models/listing")
-mapToken=process.env.MAP_TOKEN;
-const geocodingClient = mbxGeocoding({ accessToken: mapToken });
-
 
 module.exports.index =async(req,res) => {
     let initdata = await Listing.find({});
