@@ -14,6 +14,7 @@ const reviewsrouter= require("./Router/review.js");
 const userrouter= require("./Router/user.js");
 const  flash = require('connect-flash');
 const  session = require('express-session')
+const MongoStore = require('connect-mongo');
 const passport=require("passport");
 const LocalStrategy=require("passport-local")
 const User = require('./models/user.js');
@@ -24,16 +25,23 @@ const User = require('./models/user.js');
 //// database connection 
 
 
-main().then((res)=>{
+const dbbUrl= process.env.ATLAS_URL;
+
+    async function main() {
+        mongoose.connect(dbbUrl);
+    };
+
+main()
+.then((res)=>{
     console.log("connection success !")
 })
 .catch((err)=>{
     console.log("some Error occureed !" )
 })
 
-async function main() {
-await mongoose.connect('mongodb://127.0.0.1:27017/wonderlust');
-};
+
+
+
 
 
 
@@ -53,10 +61,27 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"public")));
 
 
+
+////// mongo -session 
+
+let store= MongoStore.create({
+    mongoUrl:dbbUrl,
+    crypto: {
+        secret: process.env.SECRET
+    },
+    touchAfter:24*3600
+
+})
+
+store.on("error",()=>{
+    console.log("some error on mongo store",err);
+
+})
 /////  express-session
 
 let sessionOption=({
-    secret: 'keyboard cat',
+    store,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie:
@@ -66,6 +91,11 @@ let sessionOption=({
         httpOnly: true,
     }
 });
+
+
+
+
+
 ///// use of session package & flash message
 
 app.use(session(sessionOption));
@@ -99,10 +129,10 @@ app.get("/demoeuser",async (req,res)=>{
     let fakeuser =new User({
         email:"student@gmail.com",
         username:"delta-students"
-  })
+})
     let registeruser=await User.register(fakeuser,"wordpass@12345");
     res.send(registeruser)
- })
+})
 
 // // Error handling middleware.
 

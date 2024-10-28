@@ -59,7 +59,7 @@
         <h3>All Reviews</h3>
 
 
-   
+
         
         <div class="row">
             <% for(review of list.Reviews) { %>
@@ -77,19 +77,8 @@
                 </div>
             <% } %>
         </div>
-            <div class="mb-3">
-                <div id="map">
-                    <h3>Where you 'll be</h3>
-                        <script>
-                        let Map_Token = "<%= process.env.MAP_TOKEN %>";
-                        mapboxgl.accessToken = Map_Token ;
-                        const map = new mapboxgl.Map({
-                            container: 'map', // container ID
-                            center: [77.1 ,  28.7], // starting position [lng, lat]. Note that lat must be set between -90 and 90
-                            zoom: 9 // starting zoom
-                        });
-                    </script>
-            </div>
+            
+
     </div>
 </body>
 

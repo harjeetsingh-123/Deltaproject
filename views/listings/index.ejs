@@ -1,8 +1,85 @@
 <% layout('/layouts/commen.ejs') %>
 <body>
-    <h2>All things </h2>
+    <style>
+        #filters{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .filter{
+            text-align: center;
+            margin-right: 2.3rem;
+            opacity: 0.5;
+            margin-top: 1rem;
 
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+        }
+        .filter:hover{
+            opacity: 1;
+        }
+        .form-check{
+            margin-top: 2rem;
+            height: 20%;
+        }
+
+    </style>
+    <div id="filters">
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Ternding</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Bed</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-sharp-duotone fa-solid fa-water"></i></div>
+            <p>Lake </p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-landmark-dome"></i></div>
+            <p>Dome</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-umbrella-beach"></i></div>
+            <p>Beach</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-landmark-dome"></i></div>
+            <p>Dome</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-mug-saucer"></i></div>
+            <p>Tea</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-hill-rockslide"></i></div>
+            <p>Hill</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-pizza-slice"></i></div>
+            <p> Pizza hill</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>swimming</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>snowflake</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-icons"></i></div>
+            <p>Icons</p>
+
+        </div>
+        <div class="text-toggle">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Desplay total after texes</label>
+            </div>
+        </div>
+
+    </div>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-1">
         
     <% for(listing of initdata ) { %>
 
@@ -20,5 +97,4 @@
     <% } %>
     </div>
     
-
 

@@ -15,21 +15,13 @@ module.exports.form=async(req, res) => {
 };
 
 module.exports.savelistings= async (req, res) => {
-let cordinate = await geocodingClient.forwardGeocode({
-    query: req.body.listing.location,
-    limit: 1
-})
-
-    console.log(cordinate);
-
-
     let url=req.file.path;
     let filename=req.file.filename;
     let newlisting = new Listing(req.body.listing);
     newlisting.owner=req.user._id; 
     req.flash("success", "New listing created");
     newlisting.image = {url ,filename}
-    await newlisting.save();
+    newlisting.save();
     res.redirect("/listings");
 };
 
@@ -54,7 +46,7 @@ module.exports.editlisting = async (req, res) => {
 };
 
 
- 
+
 module.exports.updatelisting = async(req, res) => {
     let { id } = req.params;
     let listing= await Listing.findByIdAndUpdate(id, { ...req.body.listing });
